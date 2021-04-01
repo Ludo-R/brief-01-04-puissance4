@@ -26,7 +26,6 @@ PLAYERS = [R, Y]
 FLAG = True
 
 class Puissance4:
-    # Init class
     def __init__(self, rows=6, cols=7, turn=random.choice(PLAYERS), colplayed=None):
         self.rows = rows
         self.cols = cols
@@ -35,21 +34,19 @@ class Puissance4:
         self.turn = turn
 
     def refresh(self):
-        # Print board for each iteration
         print("\n")
         for r in range(self.rows):
             print(' '.join(str(self.board[c][r]) for c in range(self.cols)))
 
     def checkwin(self):
-        # Check if 4 identique caractere follow
         for i in self.board:
+            print(i)
             checklist = ''.join(i)
             for value, group in groupby(checklist):
                 if len(list(group)) >=4 and value != EMPTY:
                     print('winner')
             
     def dropCoin(self):
-        # Drop coin, and verify if input is correct and if colums is full
         try: 
             col = self.board[int(self.colplayed)]
             i = -1
@@ -60,7 +57,6 @@ class Puissance4:
             print('\nBad entry, columns between (0 and 6) and verify columns not full')
 
     def game(self):
-        # Launch game
         while FLAG == True:
             self.refresh()
             self.checkwin()
