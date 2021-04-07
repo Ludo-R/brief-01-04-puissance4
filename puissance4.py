@@ -18,7 +18,6 @@ Vous devez développer un jeu de “puissance 4” similaire au jeu
 import random
 from itertools import groupby
 
-# Global Variables Color, Players, Case vide
 EMPTY = '-'
 R = 'O'
 Y = 'X'
@@ -40,13 +39,13 @@ class Puissance4:
 
     def checkwin(self):
         for i in self.board:
-            print(i)
             checklist = ''.join(i)
             for value, group in groupby(checklist):
                 if len(list(group)) >=4 and value != EMPTY:
-                    print('winner')
+                    print('\nWinner is player : %s\n'%self.turn)
+                    exit()
             
-    def dropCoin(self):
+    def dropcoin(self):
         try: 
             col = self.board[int(self.colplayed)]
             i = -1
@@ -60,12 +59,12 @@ class Puissance4:
         while FLAG == True:
             self.refresh()
             self.checkwin()
-            self.colplayed = input('\nPlay any col : (0-6)\n')
-            self.dropCoin()
             if self.turn == R:
-                self.turn = Y 
+                self.turn = Y
             else:
                 self.turn = R
+            self.colplayed = input('\nPlay any col : (0-6)\n')
+            self.dropcoin()
 
 test = Puissance4()
 test.game()
