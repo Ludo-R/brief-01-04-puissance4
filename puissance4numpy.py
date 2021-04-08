@@ -18,12 +18,13 @@ class Puissance4:
     
     def refresh(self):
         self.board = self.board.T
+        print("\n")
         print(self.board)
         self.board = self.board.T
 
     def dropcoin(self):
         i = -1
-        col = self.board[int(self.colplayed)]
+        col = self.board[int(self.colplayed)-1]
         while col[i] != 0:
             i -= 1
         col[i] = self.turn
@@ -35,10 +36,10 @@ class Puissance4:
         for i in self.board:
             checklist = ''.join(str(i))
             if group1 in checklist:
-                print("Winner is 1")
+                print("Winner is Player 1")
                 exit()
             if group2 in checklist:
-                print("Winner is -1")
+                print("Winner is Player 2")
                 exit()
         
         #check horizontal
@@ -53,19 +54,51 @@ class Puissance4:
                 exit()
         self.board = self.board.T
 
-        #check diagonales
+        #check diag
+        group1 = "1.0, 1.0, 1.0, 1.0"
+        group2 = "-1.0, -1.0, -1.0, -1.0"
+
+        diags = [self.board[::-1,:].diagonal(i) for i in range(-self.board.shape[0]+1,self.board.shape[1])]
+        diags.extend(self.board.diagonal(i) for i in range(self.board.shape[1]-1,-self.board.shape[0],-1))
+        checklistdiag = [n.tolist() for n in diags]
+
+        for i in checklistdiag:
+            checklist = ''.join(str(i))
+            if group1 in checklist:
+                print("Winner is 1")
+                exit()
+            if group2 in checklist:
+                print("Winner is -1")
+                exit()            
 
 
     def game(self):
-        while FLAG == True:
-            self.refresh()
-            self.checkwin()
-            if self.turn == R:
-                self.turn = Y
-            else:
-                self.turn = R
-            self.colplayed = input('\nPlay any col : (0-6)\n')
-            self.dropcoin()
+        nbplayer = input('\nSelect Number of Players : 1 or 2 \n')
+        if nbplayer == "2":         
+            while FLAG == True:
+                self.refresh()
+                self.checkwin()
+                if self.turn == R:
+                    self.turn = Y
+                else:
+                    self.turn = R
+                self.colplayed = input('\nPlay any col : (0-6)\n')
+                self.dropcoin()
+        elif nbplayer == "1":
+            difficulty = input('\nSelect bot difficulty : 1, 2, 3\n')
+            while FLAG == True:
+                self.refresh()
+                self.checkwin()
+                if self.turn == R:
+                    self.turn = Y
+                    self.colplayed = input('\nPlay any col : (0-6)\n')
+                else:
+                    self.turn = R
+                    self.colplayed = random.randint(0,6)
+                self.dropcoin()
+        else:
+            print("Invalid option")
+            self.game()
 
 test = Puissance4()
 test.game()
